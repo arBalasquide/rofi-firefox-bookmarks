@@ -1,0 +1,30 @@
+#!/bin/bash
+
+IFS=$'\n'
+BROWSER="/usr/bin/firefox" # Open bookmark with browser of your choice
+
+PLACES_PATH_CACHE="$HOME/.cache/firefox-places-path"
+BOOKMARKS_PATH="$HOME/.cache/places.sqlite"
+
+# Cache the location of the places database
+if [ ! -f "$PLACES_PATH_CACHE" ]; then    
+    path=$(find "$HOME/.mozilla/firefox/" | grep "places.sqlite$")
+    echo $path > "$HOME/.cache/firefox-places-path"
+fi
+
+# Firefox locks the DB when the browser is running
+# Hence copy DB to avoid lock issues
+DB_PATH="$(cat ${PLACES_PATH_CACHE})"
+cp $DB_PATH $BOOKMARKS_PATH
+
+tqry=$(sqlite3 ${BOOKMARKS_PATH} "SELECT title FROM moz_bookmarks WHERE NOT fk=''")
+
+read -d '' -ra tarray <<< "$tqry"
+
+choice=$(printf "%s\n" "${tarray[@]}" | rofi -dmenu)
+
+bookmark_id=$(sqlite3 ${BOOKMARKS_PATH} "SELECT fk FROM moz_bookmarks WHERE title=\"${choice}\"")
+
+url=$(sqlite3 ${BOOKMARKS_PATH} "SELECT url FROM moz_places WHERE id=${bookmark_id}")
+
+$BROWSER $url
