@@ -21,7 +21,7 @@ tqry=$(sqlite3 ${BOOKMARKS_PATH} "SELECT title FROM moz_bookmarks WHERE NOT fk='
 
 read -d '' -ra tarray <<< "$tqry"
 
-choice=$(printf "%s\n" "${tarray[@]}" | rofi -dmenu)
+choice=$(printf "%s\n" "${tarray[@]}" | rofi -dmenu -i)
 
 bookmark_id=$(sqlite3 ${BOOKMARKS_PATH} "SELECT fk FROM moz_bookmarks WHERE title=\"${choice}\"")
 
