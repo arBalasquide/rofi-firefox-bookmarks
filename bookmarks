@@ -27,8 +27,6 @@ bookmark_id=$(sqlite3 ${BOOKMARKS_PATH} "SELECT fk FROM moz_bookmarks WHERE titl
 
 url=$(sqlite3 ${BOOKMARKS_PATH} "SELECT url FROM moz_places WHERE id=${bookmark_id}")
 
-if [ -z "$url" ]; then
-    echo "Not a valid selection."
-else
+if [ -n "$url" ]; then
     $BROWSER $url
 fi
