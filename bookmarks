@@ -11,6 +11,8 @@ if [ ! -f "$PLACES_PATH_CACHE" ]
 then
     path=$(find "$HOME/.mozilla/firefox/" | grep "places.sqlite$")
     echo $path > "$HOME/.cache/firefox-places-path"
+    
+    cp $path $BOOKMARKS_PATH
 fi
 
 DB_PATH="$(cat ${PLACES_PATH_CACHE})"
