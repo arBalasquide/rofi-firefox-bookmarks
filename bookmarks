@@ -1,7 +1,7 @@
 #!/bin/bash
 
 IFS=$'\n'
-BROWSER="/usr/bin/firefox" # Open bookmark with browser of your choice
+BROWSER="/usr/bin/firefox"
 
 PLACES_PATH_CACHE="$HOME/.cache/firefox-places-path"
 BOOKMARKS_PATH="$HOME/.cache/places.sqlite"
